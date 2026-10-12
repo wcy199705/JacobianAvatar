@@ -1,4 +1,4 @@
-"""Rendering utilities for the Jacobian avatar pipeline.
+"""Rendering utilities for the JacobianAvatar pipeline.
 
 Public API (import from this package):
     from scripts.rendering.render_orbit import render_orbit

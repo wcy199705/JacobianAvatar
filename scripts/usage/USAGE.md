@@ -1,4 +1,4 @@
-# Jacobian Avatar (Custom) Usage
+# JacobianAvatar (Custom) Usage
 
 This guide walks through the full process of building an animatable 3D avatar from a single-camera video you record yourself.
 First create the conda environments with [INSTALL.md](INSTALL.md), then fetch the weights and body models with `bash scripts/usage/fetch_assets.sh` ([ASSETS.md](ASSETS.md)).

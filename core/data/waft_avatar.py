@@ -1,6 +1,6 @@
 # Adapted from WAFT (https://github.com/princeton-vl/WAFT, model/waft_a2.py @ b152ff1)
 # Copyright (c) 2025, Princeton Vision & Learning Lab — BSD 3-Clause License (see libs/WAFT/LICENSE).
-# Jacobian Avatar changes: dict-style config, `forward_w_init_flow` (flow refinement from an initial flow),
+# JacobianAvatar changes: dict-style config, `forward_w_init_flow` (flow refinement from an initial flow),
 # `forward_w_init_flow_prefeat` / `est_prefeat` (reuse precomputed encoder features).
 # The WAFT source itself is fetched unmodified into libs/WAFT by scripts/usage/fetch_libs.sh.
 import __future__

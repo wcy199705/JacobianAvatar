@@ -1,6 +1,6 @@
 # Training Pipeline
 
-End-to-end training flow of the Jacobian avatar.
+End-to-end training flow of JacobianAvatar.
 
 Entry for Custom: `scripts/main_hard_zero_headhand.py --config <yaml>` (wraps `main.py`; use `scripts/usage/01_train_custom.sh`).
 The wrapper is required: it applies the GS head/hand hard-zero and per-region sigma patches that the Custom recipe expects.
