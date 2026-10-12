@@ -486,7 +486,7 @@ if __name__ == "__main__":
     #crop masks based on cropped_parts
     height,width = masks[0].shape
     try:
-        cam_int = torch.Tensor(np.load(Path_params['calib_path']))
+        cam_int = torch.Tensor(np.load(os.path.join(data_folder, 'K.npy')))  # scene K.npy, if present
     except:
         cam_int = est_calib(images)
         cam_int = UnifiedCamera.intrinsic_from_param_each(fx=cam_int[0],fy=cam_int[1],cx=cam_int[2],cy=cam_int[3])
