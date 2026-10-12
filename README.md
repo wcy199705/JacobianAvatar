@@ -51,6 +51,11 @@ The code in this repository is released under the [CC BY-NC 4.0](LICENSE) licens
 Third-party code, libraries, weights and body models (SMPL-X / SMPL) keep their own licenses — see [third_party_licenses/](third_party_licenses/README.md)
 and the table in [ASSETS.md](scripts/usage/ASSETS.md).
 
+## Acknowledgements
+
+Our implementation is built upon [Neural Jacobian Fields](https://github.com/ThibaultGROUEIX/NeuralJacobianFields) (Aigerman et al., SIGGRAPH 2022).
+We thank the authors for releasing their code. The files adapted from it are listed in [third_party_licenses/](third_party_licenses/README.md).
+
 ## Citation
 
 ```bibtex

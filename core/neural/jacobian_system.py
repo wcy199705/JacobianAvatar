@@ -1,3 +1,6 @@
+# Differential-operator setup adapted from Neural Jacobian Fields (https://github.com/ThibaultGROUEIX/NeuralJacobianFields),
+# source_njf/MeshProcessor.py. Copyright (c) Adobe Inc. and its licensors. Adobe Research License (noncommercial
+# research use only), see third_party_licenses/NeuralJacobianFields/license.txt.
 #based on exavatar code.
 #copy network from exavatar. 
 #

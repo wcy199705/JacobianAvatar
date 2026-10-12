@@ -1,3 +1,6 @@
+# Adapted from Neural Jacobian Fields (https://github.com/ThibaultGROUEIX/NeuralJacobianFields), source_njf/PoissonSystem.py.
+# Copyright (c) Adobe Inc. and its licensors. Adobe Research License (noncommercial research use only),
+# see third_party_licenses/NeuralJacobianFields/license.txt.
 import numpy
 import igl
 import numpy as np
