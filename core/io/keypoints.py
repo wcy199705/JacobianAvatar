@@ -1,3 +1,5 @@
+# SMPL-X joint definitions adapted from ExAvatar (https://github.com/mks0601/ExAvatar_RELEASE), MIT License,
+# see third_party_licenses/ExAvatar/LICENSE.
 
 import numpy as np
 

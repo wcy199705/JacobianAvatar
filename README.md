@@ -53,8 +53,9 @@ and the table in [ASSETS.md](scripts/usage/ASSETS.md).
 
 ## Acknowledgements
 
-Our implementation is built upon [Neural Jacobian Fields](https://github.com/ThibaultGROUEIX/NeuralJacobianFields) (Aigerman et al., SIGGRAPH 2022).
-We thank the authors for releasing their code. The files adapted from it are listed in [third_party_licenses/](third_party_licenses/README.md).
+Our implementation is built upon [Neural Jacobian Fields](https://github.com/ThibaultGROUEIX/NeuralJacobianFields) (Aigerman et al., SIGGRAPH 2022)
+and [ExAvatar](https://github.com/mks0601/ExAvatar_RELEASE) (Moon et al., ECCV 2024).
+We thank the authors for releasing their code. The files adapted from them are listed in [third_party_licenses/](third_party_licenses/README.md).
 
 ## Citation
 

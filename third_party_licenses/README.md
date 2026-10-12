@@ -30,6 +30,17 @@ License: [NeuralJacobianFields/license.txt](NeuralJacobianFields/license.txt) (A
   - `core/optim/poisson.py` (from `source_njf/PoissonSystem.py`)
   - `core/neural/jacobian_system.py` (differential-operator setup from `source_njf/MeshProcessor.py`)
 
+## ExAvatar — [mks0601/ExAvatar_RELEASE](https://github.com/mks0601/ExAvatar_RELEASE)
+
+License: [ExAvatar/LICENSE](ExAvatar/LICENSE) (MIT)
+
+- Files adapted from the original code:
+  - `core/neural/jacobian_system.py` (network design)
+  - `core/io/keypoints.py`, `preprocessing/legacy/utils/io/keypoints.py` (SMPL-X joint definitions, from `fitting/common/utils/smpl_x.py`)
+  - `core/optim/loss_functions.py`, `preprocessing/legacy/scene/optimizer/loss_functions.py` (SSIM / LPIPS, from `avatar/common/nets/loss.py`)
+  - `core/geometry/avatar_utils.py` (`Evaluator_ExAvatar`, from `avatar/tools/eval_neuman.py`)
+  - `preprocessing/legacy/utils/geometry/pose_utils.py` (pose smoothing, from `fitting/tools/smooth_smplx_params.py`)
+
 ## Other external libraries
 
 For the licenses of MHR, WAFT, SAMURAI, PromptHMR, Sapiens2, and mmpose (downloaded by `fetch_libs.sh`), see
