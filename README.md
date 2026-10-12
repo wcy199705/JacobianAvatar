@@ -2,11 +2,13 @@
 
 [Project Page](https://wcy199705.github.io/JacobianAvatar/) | [Paper (arXiv)](https://arxiv.org/abs/2606.31115)
 
+[![JacobianAvatar teaser](assets/teaser_concept.gif)](assets/teaser_concept.mp4)
+
 This repository covers the whole workflow in one place: a video captured with a single camera → preprocessing → training a mesh + 3D Gaussian avatar → rendering.
 
 ## Quick Start
 
-**Requirements:** Linux, NVIDIA GPU (24GB VRAM recommended).
+**Requirements:** Linux, NVIDIA GPU (24GB VRAM recommended; tested on RTX 3090).
 
 > This repository contains **source code only**. External libraries, model weights, body models such as SMPL-X, and the MHR runtime environment (about 20GB)
 > are not included for licensing and size reasons, so fetch them once with `scripts/usage/fetch_assets.sh` before your first run ([ASSETS.md](scripts/usage/ASSETS.md)).
@@ -56,6 +58,7 @@ libs/                       external libraries (fetch_libs.sh downloads the orig
 resource/                   body models such as SMPL-X (downloaded by fetch_assets.sh)
 scripts/usage/              run scripts
 scripts/rendering/          rendering / video scripts
+assets/                     teaser video for this README
 ```
 
 ## License
