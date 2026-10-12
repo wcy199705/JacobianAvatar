@@ -78,7 +78,7 @@ cd libs/MHR && unzip /tmp/mhr_assets.zip assets/compact_v6_1.model assets/correc
     assets/corrective_blendshapes_lod1.npz assets/corrective_blendshapes_lod3.npz assets/lod1.fbx assets/lod3.fbx && cd ../..
 ```
 
-**2. MHR runtime environment**
+**2. MHR runtime environment** (if `pixi` is not found right after installing it, open a new shell or use `~/.pixi/bin/pixi`)
 ```bash
 cd libs/MHR && pixi install && ln -sf libEGL.so.1 .pixi/envs/default/lib/libEGL.so && cd ../..
 # packages for the SMPL(-X) conversion tool, installed into the MHR env (no change to MHR files)

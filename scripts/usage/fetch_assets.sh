@@ -49,8 +49,10 @@ fi
 # ---------------------------------------------------------------- 2. MHR runtime env
 step "2. MHR runtime env (libs/MHR/.pixi)"
 if ! have libs/MHR/.pixi/envs/default/bin/python; then
-  if command -v pixi >/dev/null; then
-    (cd libs/MHR && pixi install) || fail "pixi install"
+  # The pixi installer puts the binary in ~/.pixi/bin, which is not on PATH until a new shell is opened.
+  PIXI=$(command -v pixi || ls "${PIXI_HOME:-$HOME/.pixi}/bin/pixi" 2>/dev/null)
+  if [ -n "$PIXI" ]; then
+    (cd libs/MHR && "$PIXI" install) || fail "pixi install"
   else
     fail "pixi not found — install from https://pixi.sh and rerun (curl -fsSL https://pixi.sh/install.sh | bash)"
   fi
