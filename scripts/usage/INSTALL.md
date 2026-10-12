@@ -9,6 +9,7 @@
 | CUDA driver | A driver supporting CUDA 12.6 or later (the Sapiens2 environment uses cu126) |
 | Disk | ~0.3GB external library sources + ~20GB weights, body models, and MHR runtime environment + 10–30GB preprocessing per scene + 10–30GB training outputs |
 | Build tools | `git`, `gcc`, `ld`, CUDA toolkit 12.1 (`nvcc`, for building the CUDA extensions in requirements from source), [pixi](https://pixi.sh) (MHR runtime environment) |
+| System packages | `curl`, `unzip` (used by `fetch_assets.sh`), `libgl1`, `libglib2.0-0` (needed by OpenCV / mmcv) — on Ubuntu: `sudo apt install curl unzip libgl1 libglib2.0-0` |
 
 ## 2. Three conda environments
 

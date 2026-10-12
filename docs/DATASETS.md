@@ -45,7 +45,7 @@ Templates: `CUSTOM/template.yaml`, `configs/datasets/Custom-template.yaml`.
 | Condition | Supported |
 |---|---|
 | Single person, full body | ✅ |
-| Handheld / moving or rotating camera | ✅ (absorbed by per-frame SMPL-X optimization) |
+| Handheld / moving or rotating camera | ✅ (no camera tracking: preprocessing always assumes a fixed camera, and camera motion is absorbed by the per-frame SMPL-X optimization — DROID-SLAM is not used) |
 | Zoom changes | ❌ (K is fixed) |
 | Multiple people in view | ⚠️ tracks the most visible person in the first frame |
 | 50–600 frames | ✅ recommended (more frames increase preprocessing and training time) |

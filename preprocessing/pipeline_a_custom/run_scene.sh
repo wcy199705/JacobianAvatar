@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run full 7-step preprocessing for ONE CUSTOM scene.
-# Steps 1,2,3,5,6,7 use the Jacobian_avatar env via the meta wrapper.
+# Steps 1,2,3,5,6,7 use the jacobian_avatar_prep env via the meta wrapper.
 # Step 4 (Sapiens2 normals) uses the sapiens2 env via a dedicated CUSTOM wrapper.
 # Between step1 and step2, first_bbox.txt is auto-created from DWPose output
 # (mmpose_result_mmpose/bboxes/<first_frame>.txt — already in the x1,y1,x2,y2

@@ -15,6 +15,13 @@ set -u
 REPO=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 cd "$REPO"
 source scripts/usage/_env.sh
+# Preflight: system tools and the training env (gdown, huggingface_hub) must be ready before downloading anything.
+for t in git curl unzip; do
+  command -v $t >/dev/null || { echo "[FATAL] '$t' not found — install it first (INSTALL.md, section 1)"; exit 1; }
+done
+"$PY" -c "import gdown, huggingface_hub" 2>/dev/null || {
+  echo "[FATAL] '$PY' cannot import gdown / huggingface_hub — create the Jacobian_avatar env first (INSTALL.md, section 2) or set PY=/path/to/python"
+  exit 1; }
 bash scripts/usage/fetch_libs.sh || { echo "[FATAL] failed to fetch library sources"; exit 1; }
 TMP=$REPO/.fetch_tmp
 mkdir -p "$TMP"
@@ -33,8 +40,14 @@ tue_download() {
   read -r -s -p "  Password: " pass; echo
   curl -L --fail -o "$out" --data-urlencode "username=$user" --data-urlencode "password=$pass" \
     "https://download.is.tue.mpg.de/download.php?domain=$domain&sfile=$sfile&resume=1"
-  # On login failure, an HTML page is returned
-  if ! unzip -tq "$out" >/dev/null 2>&1; then rm -f "$out"; return 1; fi
+  # On login failure, an HTML page is returned instead of the zip — keep it (renamed) so the cause can be checked
+  if ! unzip -tq "$out" >/dev/null 2>&1; then
+    if [ -s "$out" ]; then
+      mv -f "$out" "$out.html"
+      echo "  Not a valid zip (wrong username/password or license not accepted?). Server response kept at: $out.html"
+    fi
+    return 1
+  fi
 }
 
 # ---------------------------------------------------------------- 1. MHR model files
