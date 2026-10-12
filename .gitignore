@@ -1,0 +1,10 @@
+# External libraries, weights and body models (fetched by scripts/usage/fetch_assets.sh)
+libs/
+resource/
+
+# Training / preprocessing outputs
+outputs/
+logs/
+
+__pycache__/
+*.pyc

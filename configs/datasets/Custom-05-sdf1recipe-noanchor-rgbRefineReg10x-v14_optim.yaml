@@ -1,0 +1,55 @@
+# Custom-05 v14_optim: rgbRefineReg10x + scheduling fix + reduced semlap + GS#1 5x + normal_tv + stronger mean_offset
+# Base: Custom-05-sdf1recipe-noanchor-rgbRefineReg10x (extends default_v6_custom → default_v6)
+# Env: LR_SCHEDULER_ADAPTIVE=1 SCHEDULER_DECAY_OVERRIDE=0.95 SCHEDULER_RESET_PER_STAGE=1
+extends: ../default_v6_custom.yaml
+dataset_name: Custom
+scene_name: '05'
+data_path: /path/to/05_training
+save_root_override: outputs/05/sdf1recipe_noanchor_rgbRefineReg10x_v14_optim
+anchor_head_only: false
+model:
+  legacy_name: world_normal_more_dump_bigplane   # match trainer default (setup.py)
+stages:
+  pre: {batch_size: 16}
+  gs: {max_iters: 500}   # Custom-05 base = 100 → 500 (5x)
+losses:
+  mesh:
+    common:
+      Jacob_scale_lap_reg: 0
+      Jacob_shear_lap_reg: 0
+      rgb_refine_reg: 50
+      normal_sobel_edge_l1: 10
+      adjacent_rgb_consistency: 10
+      adjacent_canon_consistency: 5
+      Mesh_head_rgb_l1: 2.0
+      Mesh_head_rgb_lpips: 1.0
+    level_0:
+      laplacian: 100
+      P_iso_sdf_vts_norm_hinge: 1.0
+      P_iso_sdf_face_norm_hinge: 1.0
+      semantic_albedo_lap:  {default: 1.0, head: 0.1, hand: 100}
+      semantic_mesh_offset: {default: 0.01, head: 0.01, hand: 100}
+    level_1:
+      laplacian: 1000
+      P_iso_sdf_vts_norm_hinge: 1.0
+      P_iso_sdf_face_norm_hinge: 1.0
+      semantic_albedo_lap:  {default: 10.0, head: 1.0, hand: 100}
+      semantic_mesh_offset: {default: 0.01, head: 0.01, hand: 100}
+      normal_tv: 5.0     # newly enabled
+  gs:
+    common:
+      GS_head_rgb_lpips: 5.0
+      GS_head_rgb_l1: 10.0
+      rgb_refine_reg: 50
+    level_0:
+      # reduced semlap (to mesh-stage level)
+      semantic_albedo_lap: {default: 1.0,  head: 0.1,  hand: 100.0}
+      semantic_rgb_lap:    {default: 0.1,  head: 0.01, hand: 100.0}
+      # no mean_offset L0 override (keep base default)
+    level_1:
+      # reduced semlap (to mesh-stage level)
+      semantic_albedo_lap:           {default: 10.0, head: 1.0,  hand: 100.0}
+      semantic_rgb_lap:              {default: 1.0,  head: 0.1,  hand: 100.0}
+      # stronger mean_offset
+      semantic_mean_offset_l2:       {default: 1.0,  head: 1000, hand: 10000}   # default 0.01 → 1.0
+      semantic_mean_offset_norm_lap: {default: 100,  head: 1000, hand: 10000}   # head 100→1000, hand 100→10000

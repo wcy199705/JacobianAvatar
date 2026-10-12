@@ -1,0 +1,9 @@
+# Template for training a new scene (recommended recipe = Custom-05 default: freeze100 + scaleL2x100).
+# 1) configs/legacy/SMPLX_dataloader/CUSTOM/template.yaml copy to <scene_name>.yaml and edit
+# 2) Copy this file to Custom-<scene_name>.yaml and edit the 3 fields below
+# Run: bash scripts/usage/01_train_custom.sh configs/datasets/Custom-<scene_name>.yaml <gpu>
+# Other base recipes: extends: ../default2.yaml, ../default2_loose.yaml (loose clothing) or ../default3.yaml
+extends: ./Custom-05-v14_optim_v6_freeze100_scaleL2x100.yaml
+scene_name: 'my_scene'                       # = CUSTOM/<scene_name>.yaml file name
+data_path: /path/to/my_scene_training        # for reference only (actual data path is training_folder in the scene yaml)
+save_root_override: outputs/my_scene/default

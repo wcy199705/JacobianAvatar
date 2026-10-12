@@ -1,0 +1,11 @@
+# Custom-05: default (freeze100+scaleL2x100) + GS mean_offset_l2 × 100 (both level_0 + level_1)
+# default_v6 base (both levels): semantic_mean_offset_l2 = {default: 0.01, head: 1000, hand: 10000}
+# × 100 → {default: 1.0, head: 100000, hand: 1000000}
+extends: ./Custom-05-v14_optim_v6_freeze100_scaleL2x100.yaml
+save_root_override: outputs/05/v14_optim_v6_freeze100_scaleL2x100_gsoffx100
+losses:
+  gs:
+    level_0:
+      semantic_mean_offset_l2: {default: 1.0, head: 100000.0, hand: 1000000.0}
+    level_1:
+      semantic_mean_offset_l2: {default: 1.0, head: 100000.0, hand: 1000000.0}

@@ -1,0 +1,9 @@
+# Packages built from source against the already installed torch / numpy (no build isolation):
+#   pip install --no-deps --no-build-isolation -r requirements_build.txt
+# chumpy imports pip in its setup.py; mmcv / diff_gauss / nvdiffrast / pytorch3d / simple_knn compile CUDA ops.
+chumpy @ git+https://github.com/mattloper/chumpy.git@580566eafc9ac68b2614b64d6f7aaa84eebb70da   # PyPI 0.70 fails on numpy>=1.24
+mmcv==2.1.0
+diff_gauss @ git+https://github.com/slothfulxtx/diff-gaussian-rasterization.git@726449a8af5b933937acf1fc78deeee2beb0f879
+nvdiffrast @ git+https://github.com/NVlabs/nvdiffrast@729261dc64c4241ea36efda84fbf532cc8b425b8
+pytorch3d @ git+https://github.com/facebookresearch/pytorch3d.git@33824be3cbc87a7dd1db0f6a9a9de9ac81b2d0ba
+simple_knn @ git+https://gitlab.inria.fr/bkerbl/simple-knn.git@f155ec04131cb579f53443a06879d37115f4612f

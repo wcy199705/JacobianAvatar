@@ -1,0 +1,158 @@
+Cascade_Avatar:
+  double_shading: False
+  use_albedo_act: True
+  use_residual_feat: True
+  share_color_geo_feat: True
+  use_shading: False
+  max_level: 2  # Max level, merging the former Level 0 and 1
+  avatar_lr: 0.0 # Optimize LBS param if needed
+  use_init_rgb: True
+  rgb_init:
+    lr: 0.0
+  # [Path A] Geometry (Jacobian) Encoders - created independently per level
+  encoder:
+    level_1:
+      input_type: 'face_centers'
+      type: 'triplane'
+      plane_res: 64
+      feature_dim: 32
+      init_scale: 1.0
+      agg_mode: 'concat'
+      lr: 1e-3
+
+    level_2:
+      input_type: 'face_centers'
+      type: 'triplane'
+      plane_res: 128
+      feature_dim: 32
+      init_scale: 1.0
+      agg_mode: 'concat'
+      lr: 1e-3
+
+
+  # [Path B] Appearance (GS) Encoder - only one created, at the finest level (uses pooling)
+  gs_encoder:
+    input_type: 'face_centers' # or 'face_centers'
+    type: 'triplane'
+    plane_res: 128
+    feature_dim: 32 # Feature dimension for GS (may be larger than Geometry)
+    init_scale: 1.0
+    agg_mode: 'concat'
+    lr: 1e-3
+
+  gs_decoder:
+    geo_feat:
+      use_pose: True
+
+      type: 'standard'
+      hidden_dim: 128
+      output_dim: 128
+
+      num_layers: 2
+      num_groups: 4
+      use_gn: False
+      relu_final: True
+      lr: 1e-3
+
+
+
+    mean_offset:
+        type: 'standard'
+        hidden_dim: 128
+        num_layers: 0
+        use_gn: False
+        zero_last_init: True # Residual starts from 0
+        output_dim: 3
+        lr: 1e-3
+
+    scale_offset:
+        type: 'standard'
+        hidden_dim: 128
+        num_layers: 0
+        use_gn: False
+        zero_last_init: True # Residual starts from 0
+        output_dim: 1  # iso
+        lr: 1e-3
+
+
+  # [Geometry Decoder] Pose deformation network
+  deform_pose:
+    deform_type: 'multiple_jacob' # 'multiple_jacob' uses Rot/Scale/Shear nets
+    input_dim: 0 # Code auto-calculates this
+    lr: 1e-3
+
+    Pose_embedder:
+      lr: 1e-3
+      embedder: 'sample'
+      # Add extra settings such as frequency if needed
+
+    # Jacobian Component Networks
+    rotation_net:
+      type: 'standard'
+      hidden_dim: 128
+      num_layers: 2 # Follows the Level 1 setting (deeper)
+      zero_last_init: True
+      use_gn: False
+
+
+    scale_net:
+      type: 'standard'
+      hidden_dim: 128
+      num_layers: 2
+      zero_last_init: True
+      output_activation: 'exp'
+      use_gn: False
+
+    shear_net:
+      type: 'standard'
+      hidden_dim: 128
+      num_layers: 2
+      zero_last_init: True
+      use_gn: False
+
+  # Jacobian System Settings
+  jacobian_system:
+    level_1:
+      jacobian_solver:
+        compute_splu: True
+      dump: 5
+    level_2:
+      jacobian_solver:
+        compute_splu: True
+      dump: 1
+
+
+  # [Appearance Decoder] Gaussian Splatting & MLPs
+  GS2D:
+    scaling_factor: 0.33 # Set relative to the finest level
+    
+    # Optimizer Learning Rates for GS params
+    lr:
+      global_scale: 0.0
+
+    # 1. Coarse RGB MLP (Input: Pooled Feature)
+    RGB_MLP:
+      type: 'standard'
+      hidden_dim: 128
+      output_dim: 3
+      num_layers: 2
+      zero_last_init: True # Coarse color should not be zero init
+      lr: 1e-3
+      use_gn: False
+      num_groups: 4
+
+    # 2. Refine RGB MLP (Input: Feature + Pose + Normal) -> Residual
+    Refine_RGB_MLP:
+      type: 'standard'
+      use_norm: True      # Use normals for view-dependent color
+      use_norm_PE: False
+      use_feat: True
+      use_pose: False
+      hidden_dim: 128
+      output_dim: 3
+      num_layers: 2
+      zero_last_init: True # Residual starts from 0
+      use_gn: False
+      lr: 1e-3
+      num_groups: 4
+      #output_activation: 'sigmoid'

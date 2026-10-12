@@ -1,0 +1,158 @@
+# apps/Rebuttal/v5_release/configs/default_v6.yaml
+#
+# v6 baseline = v5 (= v4_acc200 recipe) + face-head scale regularizer revival.
+# Delta vs default_v5.yaml:
+#   - losses.gs.level_1.semantic_scale_l2 = {default: 0, head: 1000, hand: 0}
+#       Pulls face gaussians' scale_residual toward 0 during GS#1 → face
+#       gaussians stay close to their mesh-edge mesh2splat init scale, prevents
+#       blur from face gaussians blowing up. Was 0 in v5 / v4_acc200 spec.
+#
+# Inherits everything else from v5:
+#   - mesh2splat: σ=0.65, anisotropic, paper-thin z=1e-7, clamp [0, 50] mm
+#   - sub2 mesh + v4 (canon_vts_l1 + canon_edge_length) + acc200 (mesh adj_canon=200)
+#   - head RGB losses fully wired at both levels.
+
+model:
+  subdivide_count: 2
+  bodypart_scale: false
+  scale_zero_last_init: false
+  use_init_rgb: false
+  scale_offset:
+    output_dim: 3            # anisotropic (auto-set when mesh2splat.iso=none)
+  # Rasterizer default. 'vanilla' uses slothfulxtx (diff_gauss).
+  # 'gof' uses GoF — but cascade.render's GoF dispatch is stage-aware, only
+  # active at GS#1/GS#2 stages (mesh stages always use vanilla). Set
+  # gs_rasterizer: gof in scene yaml to opt in for GS stages only.
+  gs_rasterizer: vanilla
+
+mesh2splat:
+  enabled: true
+  iso: none
+  sigma: 0.65
+  scale_z: 1.0e-7            # vanilla z (only used when gs_rasterizer != gof)
+  scale_z_gof: 1.0e-3        # thicker z when GoF active (paper-thin
+                             # degenerates GoF's ray-Gaussian intersection)
+
+scale_clamp:
+  pure_max: 0.05             # 50 mm
+  pure_min: 0.0
+  init_offset: 4.0
+
+training:
+  body_triplane_lr: 0.01
+  # Pose-noise scale for the L0 stage (2.0 ≈ 6° effective).
+  pose_noise_scale: 2.0
+  inject_pose_lr: 1.0e-4
+  inject_transl_lr: 1.0e-4
+  gs_freeze_rgb_iters: 50
+
+features:
+  fix_head_idx: true
+  region_aware_lap: true
+
+stages:
+  pre:  {max_iters: 500}
+  l0:   {max_iters: 500, sampling: 5}
+  l1:   {max_iters: 1000, sampling: 5}
+  all:  {max_iters: 500,  sampling: 5}
+  gs:   {max_iters: 300,  sampling: 1}
+# ---------------------------------------------------------------------------
+# Loss config — `common` applies to both levels; `level_K` overrides at level K.
+# Effective dict per level = {**common, **level_K}.
+# ---------------------------------------------------------------------------
+losses:
+  mesh:
+    common:
+      # Photometric (body)
+      Mesh_rgb_l1: 10.0
+      Mesh_rgb_ssim: 2.0
+      Mesh_rgb_lpips: 2.0
+      Mesh_albedo_l1: 10.0
+      # Photometric (head) — v4_acc200 inject
+      Mesh_head_rgb_lpips: 0.5
+      Mesh_head_rgb_l1: 1.0
+      # Residual-RGB L1 reg (Refine_RGB_MLP output, pre-sigmoid).
+      # mesh 1.0 → 5.0 (v7 used 1.0; v6 Mesh_rgb_l1 half of v7's
+      # so absolute 5.0 here ≈ relative weight of v7's 2.5).
+      rgb_refine_reg: 5.0
+      # Geometry / regularizers
+      P_mesh_normal_cosine: 5.0
+      P_mesh_normal_ssim: 10.0
+      P_mesh_masks: 1.0
+      normal_sobel_edge_l1: 10.0
+      Jacob_shear_l1: 0.1
+      Jacob_scale_lap_reg: 1000.0
+      Jacob_shear_lap_reg: 1000.0
+      stretch_edge_hinge: 100.0
+      stretch_svd_max: 100.0
+      init_full_pose: 1.0
+      acc_reg: 0.0
+      # Canon regularizers (v4 delta)
+      canon_vts_l1: 0.01
+      # Adjacent consistency (mesh): v5 bump 20 → 200 (per memory + v4_acc200 inject)
+      adjacent_canon_consistency: 200.0
+      adjacent_rgb_consistency: 10.0
+      adjacent_albedo_consistency: 0.0
+    level_0:
+      laplacian: 3000
+      canon_edge_length: 1000.0
+      P_iso_sdf_vts_norm_hinge: 1.0
+      P_iso_sdf_face_norm_hinge: 1.0
+      mesh_OF_init_reg: 10.0
+      mesh_OF_reg: 0.0
+      semantic_albedo_lap:  {default: 1.0, head: 0.1,  hand: 1000.0}
+      semantic_rgb_lap:     {default: 0.1, head: 0.01, hand: 100.0}
+      semantic_mesh_offset: {default: 1.0, head: 1.0,  hand: 100000.0}
+    level_1:
+      laplacian: 30000
+      canon_edge_length: 10000.0
+      P_iso_sdf_vts_norm_hinge: 0.1
+      P_iso_sdf_face_norm_hinge: 0.1
+      mesh_OF_init_reg: 0.0
+      mesh_OF_reg: 10.0
+      semantic_albedo_lap:  {default: 10.0, head: 1.0,  hand: 1000.0}
+      semantic_rgb_lap:     {default: 1.0,  head: 0.1,  hand: 100.0}
+      semantic_mesh_offset: {default: 10.0, head: 10.0, hand: 100000.0}
+
+  gs:
+    common:
+      # Photometric (head) — v4_acc200 inject, applied to BOTH levels at 0.1
+      GS_head_rgb_lpips: 0.1
+      # Albedo — v4_acc200 inject 0.1 at both
+      GS_albedo_l1: 0.1
+      # Residual-RGB L1 reg (Refine_RGB_MLP output, pre-sigmoid).
+      # Matches v7 gs_rgb_refine_reg_w=5.0 — was missing from v6.
+      rgb_refine_reg: 5.0
+      # mesh2splat residual L2 reg — auto-injected by legacy at W=1.0
+      scale_offset_reg: 1.0
+      # Adjacent consistency (GS)
+      adjacent_canon_consistency: 200.0
+      adjacent_rgb_consistency: 1.0
+      adjacent_albedo_consistency: 0.0
+      adjacent_mean_offset: 1000.0
+    level_0:
+      GS_laplacian: 3000
+      sqrt_area_offset: 0   # bodypart_scale=false → hand_except_mask key absent
+      semantic_albedo_lap: {default: 10.0, head: 1.0,  hand: 1000.0}
+      semantic_rgb_lap:    {default: 1.0,  head: 0.01, hand: 100.0}
+      semantic_mean_offset_norm_lap: {default: 10,  head: 10,  hand: 10.0}
+      # v4_acc200 zeroes semantic_scale_l2 + semantic_scale_lap.default
+      semantic_scale_lap:  {default: 0.0,  head: 0.0,  hand: 0.0}
+      semantic_scale_l2:   {default: 0.0,  head: 0.0,  hand: 0.0}
+      semantic_mean_offset_l2: {default: 0.01, head: 1000.0, hand: 10000.0}
+    level_1:
+      GS_mask_l1: 1.0
+      GS_OF_reg: 0.0
+      GS_laplacian: 10000
+      GS_rgb_ssim: 2.0
+      GS_rgb_lpips: 2.0
+      GS_rgb_l1: 10.0
+      GS_head_rgb_l1: 1.0   # legacy base (not in v4_acc200 inject; kept at level_1)
+      sqrt_area_offset: 0
+      semantic_albedo_lap: {default: 10.0, head: 100.0, hand: 10000.0}
+      semantic_rgb_lap:    {default: 1.0,  head: 10.0,  hand: 1000.0}
+      semantic_mean_offset_norm_lap: {default: 100, head: 100, hand: 100.0}
+      semantic_scale_lap:  {default: 0.0,    head: 0.0,    hand: 0.0}
+      # v6 delta vs v5: head=1000 (was 0). Face gaussians' scale residual L2 reg.
+      semantic_scale_l2:   {default: 0.0,    head: 1000.0, hand: 0.0}
+      semantic_mean_offset_l2: {default: 0.01, head: 1000.0, hand: 10000.0}

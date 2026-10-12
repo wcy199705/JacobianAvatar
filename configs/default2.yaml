@@ -1,0 +1,90 @@
+# Base recipe 2 (v14_optim_v6).
+# Use it from a scene recipe:  extends: ../default2.yaml   (+ scene_name, save_root_override).
+# For loose clothing / long hair use default2_loose.yaml instead.
+# runtime_env is applied by scripts/usage/*.sh (head/hand Gaussian offset hard-zero, per-region
+# initial Gaussian size, body-offset delay); it is read only by scripts/main_hard_zero_headhand.py.
+dataset_name: Custom
+runtime_env: GS_ZERO_HEAD_HAND=1 MESH2GS_HEAD_SIGMA_MULT=0.2 MESH2GS_HAND_SIGMA_MULT=0.2 MESH2GS_BODY_SIGMA_MULT=0.45 GS_BODY_DELAY_ITERS=100
+model:
+  subdivide_count: 2
+  bodypart_scale: false
+  scale_zero_last_init: false
+  use_init_rgb: false
+  scale_offset: {output_dim: 3}
+  gs_rasterizer: vanilla
+  legacy_name: world_normal_more_dump_bigplane
+  legacy_exp_name: single_of5_l0noise
+mesh2splat: {enabled: true, iso: full, sigma: 0.8, scale_z: 1.0e-07, scale_z_gof: 0.001}
+scale_clamp: {pure_max: 0.05, pure_min: 0.0, init_offset: 4.0}
+training: {body_triplane_lr: 0.01, pose_noise_scale: 2.0, inject_pose_lr: 0.0001, inject_transl_lr: 0.0001, gs_freeze_rgb_iters: 50}
+features: {fix_head_idx: true, region_aware_lap: true}
+stages:
+  pre: {max_iters: 150}
+  l0: {max_iters: 100, sampling: 5, test_step: 2, batch_size: 3}
+  l1: {max_iters: 50, sampling: 5, test_step: 2, batch_size: 3}
+  all: {max_iters: 150, sampling: 5, test_step: 2, batch_size: 3}
+  gs: {max_iters: 150, sampling: 1, test_step: 2, batch_size: 3}
+  all_stages: {cosine_annealing: true, cosine_t_max: 10, eta_min_ratio: 0.01}
+losses:
+  mesh:
+    common: {Mesh_rgb_l1: 10.0, Mesh_rgb_ssim: 2.0, Mesh_rgb_lpips: 2.0, Mesh_albedo_l1: 10.0, Mesh_head_rgb_lpips: 1.0, Mesh_head_rgb_l1: 2.0,
+      rgb_refine_reg: 1, P_mesh_normal_cosine: 5.0, P_mesh_normal_ssim: 10.0, P_mesh_masks: 1.0, normal_sobel_edge_l1: 10,
+      Jacob_shear_l1: 0.1, Jacob_scale_lap_reg: 1000.0, Jacob_shear_lap_reg: 1000.0, stretch_edge_hinge: 100.0, stretch_svd_max: 100.0,
+      init_full_pose: 1.0, acc_reg: 0.0, canon_vts_l1: 0.01, adjacent_canon_consistency: 0, adjacent_rgb_consistency: 0, adjacent_albedo_consistency: 0.0}
+    level_0:
+      laplacian: 3000
+      canon_edge_length: 1000.0
+      P_iso_sdf_vts_norm_hinge: 1.0
+      P_iso_sdf_face_norm_hinge: 1.0
+      mesh_OF_init_reg: 100.0
+      mesh_OF_reg: 0.0
+      semantic_albedo_lap: {default: 1.0, head: 0.1, hand: 100}
+      semantic_rgb_lap: {default: 0.1, head: 0.01, hand: 100.0}
+      semantic_mesh_offset: {default: 1.0, head: 1.0, hand: 100000.0}
+    level_1:
+      laplacian: 30000
+      canon_edge_length: 10000.0
+      P_iso_sdf_vts_norm_hinge: 1.0
+      P_iso_sdf_face_norm_hinge: 1.0
+      mesh_OF_init_reg: 0.0
+      mesh_OF_reg: 100.0
+      semantic_albedo_lap: {default: 10.0, head: 1.0, hand: 100}
+      semantic_rgb_lap: {default: 1.0, head: 0.1, hand: 100.0}
+      semantic_mesh_offset: {default: 10.0, head: 10.0, hand: 100000.0}
+      normal_tv: 5.0
+  gs:
+    common: {GS_head_rgb_lpips: 5.0, GS_albedo_l1: 0.1, rgb_refine_reg: 10, scale_offset_reg: 1.0, adjacent_canon_consistency: 200.0,
+      adjacent_rgb_consistency: 1.0, adjacent_albedo_consistency: 0.0, adjacent_mean_offset: 1000.0, GS_head_rgb_l1: 10.0}
+    level_0:
+      GS_laplacian: 0
+      sqrt_area_offset: 0
+      semantic_albedo_lap: {default: 1.0, head: 0.1, hand: 100.0}
+      semantic_rgb_lap: {default: 0.1, head: 0.01, hand: 100.0}
+      semantic_mean_offset_norm_lap: {default: 0.0, head: 0.0, hand: 0.0}
+      semantic_scale_lap: {default: 0.0, head: 0.0, hand: 0.0}
+      semantic_scale_l2: {default: 0.0, head: 0.0, hand: 0.0}
+      semantic_mean_offset_l2: {default: 1.0, head: 100000.0, hand: 1000000.0}
+      GS_head_rgb_lpips: 0.0
+      GS_head_rgb_l1: 0.0
+      GS_albedo_l1: 0.0
+      rgb_refine_reg: 0.0
+      scale_offset_reg: 0.0
+      adjacent_canon_consistency: 0.0
+      adjacent_rgb_consistency: 0.0
+      adjacent_mean_offset: 0.0
+    level_1:
+      GS_mask_l1: 1.0
+      GS_OF_reg: 0.0
+      GS_laplacian: 10000
+      GS_rgb_ssim: 5.0
+      GS_rgb_lpips: 5.0
+      GS_rgb_l1: 5.0
+      GS_head_rgb_l1: 10.0
+      sqrt_area_offset: 0
+      semantic_albedo_lap: {default: 10.0, head: 1.0, hand: 100.0}
+      semantic_rgb_lap: {default: 1.0, head: 0.1, hand: 100.0}
+      semantic_mean_offset_norm_lap: {default: 100, head: 1000, hand: 10000}
+      semantic_scale_lap: {default: 0.0, head: 0.0, hand: 0.0}
+      semantic_scale_l2: {default: 1, head: 1000, hand: 100}
+      semantic_mean_offset_l2: {default: 1.0, head: 100000.0, hand: 1000000.0}
+anchor_head_only: false

@@ -1,0 +1,26 @@
+# Custom default: extends default_v6.yaml with the short-iter stage recipe
+# (pre/l0/l1=50, all/gs=100, test_step=2 per stage). Scene recipes override max_iters.
+extends: ./default_v6.yaml
+
+stages:
+  pre: {max_iters: 50}
+  l0:  {max_iters: 50,  test_step: 2}
+  l1:  {max_iters: 50,  test_step: 2, batch_size: 3}
+  all: {max_iters: 100, test_step: 2}
+  gs:  {max_iters: 100, test_step: 2}
+
+# Wider debug/novel-pose renders (training loss unchanged). See mesh_setup.py.
+debug_cam:
+  width_scale: 1.2      # W: 720 → 864, cx recentered to 432 (fx/fy/cy = training)
+
+# OFvstrong (10×) recipe promoted to Custom-flavor default.
+# Rationale: Custom-05 ablation showed mesh_OF_reg raw drops from 0.02250
+# (weight=10) to 0.01880 (weight=100), a 16% improvement in mesh-to-flow fit,
+# without degrading body RGB / normal cosine metrics. Only mesh OF weights are
+# lifted; GS_OF_reg is intentionally kept at 0 (per experiment decision).
+losses:
+  mesh:
+    level_0:
+      mesh_OF_init_reg: 100.0   # ← default_v6 base = 10.0
+    level_1:
+      mesh_OF_reg: 100.0        # ← default_v6 base = 10.0

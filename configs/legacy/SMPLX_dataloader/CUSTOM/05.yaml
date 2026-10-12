@@ -1,0 +1,42 @@
+target_idx: 0
+
+SMPL:
+  smpl_root: 'resource'
+  segmentation: 'body_segmentation/smplx/smplx_vert_segmentation.json'
+  model_type: smplx
+  gender: neutral
+  use_pca: False
+  num_betas: 10
+  pose_format: 'openpose'
+  num_pca_comp: 45
+  age: adult
+  ext: pkl
+  use_flat_hand: False
+  use_face_contour: True
+  use_texture: True
+  use_semantic: True
+  use_bias: True
+  fill_mouth: False
+  canon_leg_angle: 30
+  canon_sholder_angle: 0
+
+Path:
+  save_root: 'outputs/05/legacy_default'
+  training_folder: '/path/to/05_training'
+  novel_pose_folder: '/path/to/05_training'
+  novel_view_folder: None
+  exavatar_pose_folder: ''   # (optional) pose sequence folder for extra_pose rendering during training (ExAvatar format). Skipped if empty
+  raw_smplx_folder_name: 'smplx_meshes'
+  smplx_folder_name: 'smplx_w_hand'
+
+WAFT:
+  feature_encoder: "dinov3"
+  iterative_module: "vits"
+  iters: 3
+  var_min: 0
+  var_max: 10
+  use_var: True
+
+use_hamer: False
+use_hunyuan: True
+use_sapiens_normal: True

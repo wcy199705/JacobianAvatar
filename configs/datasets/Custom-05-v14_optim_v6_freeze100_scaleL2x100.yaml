@@ -1,0 +1,18 @@
+# Custom-05 with new default: FPFIX + freeze100 + scaleL2 x100
+# Env: LR_SCHEDULER_ADAPTIVE=1 SCHEDULER_RESET_PER_STAGE=1 GS_ZERO_HEAD_HAND=1
+#      MESH2GS_HEAD_SIGMA_MULT=0.3 MESH2GS_HAND_SIGMA_MULT=0.3 MESH2GS_BODY_SIGMA_MULT=0.6
+# Launcher: scripts/main_hard_zero_headhand.py
+extends: ./Custom-05-sdf1recipe-noanchor-rgbRefineReg10x-v14_optim.yaml
+save_root_override: outputs/05/v14_optim_v6_freeze100_scaleL2x100
+stages:
+  pre: {max_iters: 150}
+  l0:  {max_iters: 100}
+  l1:  {max_iters: 50}
+  all: {max_iters: 150}
+  gs:  {max_iters: 150}
+training:
+  gs_freeze_rgb_iters: 100
+losses:
+  gs:
+    level_1:
+      semantic_scale_l2: {default: 100, head: 100000, hand: 10000}

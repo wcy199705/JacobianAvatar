@@ -1,0 +1,4 @@
+# Environment-specific filesystem roots. Editable per machine.
+# Scene yamls may reference these via `${paths.data.<key>}`.
+
+data: {}

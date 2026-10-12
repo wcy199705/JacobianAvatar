@@ -1,0 +1,13 @@
+L0_samplings: [5]
+L1_samplings: [5]
+All_samplings: [5]
+GS_sampling: [1]
+
+L0_noise_scale: [3]
+L0_min_noise: [0.1]
+L1_noise_scale: [1]
+L1_min_noise: [0.01]
+All_noise_scale: [1.0]
+All_min_noise: [0.01]
+GS_noise_scale: [0.1]
+GS_min_noise: [0.01]

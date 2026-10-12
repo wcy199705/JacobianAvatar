@@ -1,0 +1,8 @@
+# Base recipe 2 for loose clothing / long hair (v14_optim_v6 loose).
+# = default2.yaml + loose-fit Pre stage (src/stages/pre_loose_smpl.py) with a smaller Pre batch.
+# Use it from a scene recipe:  extends: ../default2_loose.yaml   (+ scene_name, save_root_override).
+extends: ./default2.yaml
+stages:
+  pre:
+    loose_smpl: true
+    batch_size: 4
