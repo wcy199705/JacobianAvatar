@@ -1,4 +1,4 @@
-# JacobianAvatar (ECCV 2026)
+# [ECCV 2026] JacobianAvatar
 
 [Project Page](https://wcy199705.github.io/JacobianAvatar/) | [Paper (ECCV)](https://link.springer.com/chapter/10.1007/978-3-032-37013-6_34) | [arXiv](https://arxiv.org/abs/2606.31115)
 
