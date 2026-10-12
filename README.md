@@ -48,6 +48,11 @@ bash scripts/usage/04_render_viz.sh configs/datasets/Custom-my_scene.yaml output
 ## License
 
 The code in this repository is released under the [CC BY-NC 4.0](LICENSE) license (non-commercial use only).
+
+**Commercial use is not permitted.** Parts of this code are derived from [Neural Jacobian Fields](https://github.com/ThibaultGROUEIX/NeuralJacobianFields),
+which is released under the [Adobe Research License](third_party_licenses/NeuralJacobianFields/license.txt); this repository may therefore be used
+for noncommercial research purposes (academic research and teaching) only.
+
 Third-party code, libraries, weights and body models (SMPL-X / SMPL) keep their own licenses — see [third_party_licenses/](third_party_licenses/README.md)
 and the table in [ASSETS.md](scripts/usage/ASSETS.md).
 
