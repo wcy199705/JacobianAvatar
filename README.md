@@ -4,7 +4,7 @@
 
 ![JacobianAvatar teaser](assets/teaser_concept.gif)
 
-<h3 align="center">Monocular video → Preprocessing → Mesh + 3D Gaussian avatar → Rendering</h3>
+<h3 align="center">Official code of JacobianAvatar: Temporally Consistent Semi-rigid Avatar Reconstruction from a Monocular Video</h3>
 
 ## Quick Start
 
