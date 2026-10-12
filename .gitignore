@@ -8,3 +8,6 @@ logs/
 
 __pycache__/
 *.pyc
+
+# Temporary downloads of fetch_assets.sh (kept when an item fails)
+.fetch_tmp/

@@ -32,14 +32,22 @@ have() { [ -e "$1" ] && echo "  already exists: $1"; }
 fail() { echo "  [FAILED] $1"; FAILED+=("$1"); }
 gdown_() { $PY -m gdown "$@"; }
 
-# Login download from the official site (download.is.tue.mpg.de). $1=domain $2=file name $3=output path $4=site name
+# Login download from the official site (download.is.tue.mpg.de). $1=domain $2=file name $3=output path $4=site name $5=registration URL
 tue_download() {
-  local domain=$1 sfile=$2 out=$3 site=$4 user pass
-  echo "  $site account ($domain) — register at: https://$domain.is.tue.mpg.de"
+  local domain=$1 sfile=$2 out=$3 site=$4 reg=$5 user pass code
+  echo "  $site account — register at: $reg"
   read -r -p "  Username: " user
   read -r -s -p "  Password: " pass; echo
-  curl -L --fail -o "$out" --data-urlencode "username=$user" --data-urlencode "password=$pass" \
-    "https://download.is.tue.mpg.de/download.php?domain=$domain&sfile=$sfile&resume=1"
+  code=$(curl -L --fail -o "$out" -w '%{http_code}' --data-urlencode "username=$user" --data-urlencode "password=$pass" \
+    "https://download.is.tue.mpg.de/download.php?domain=$domain&sfile=$sfile&resume=1")
+  if [[ $code != 2* ]]; then
+    rm -f "$out"
+    case $code in
+      401|403) echo "  Login failed (HTTP $code) — check the username/password and that you accepted the license at $reg" ;;
+      *)       echo "  Download failed (HTTP $code)" ;;
+    esac
+    return 1
+  fi
   # On login failure, an HTML page is returned instead of the zip — keep it (renamed) so the cause can be checked
   if ! unzip -tq "$out" >/dev/null 2>&1; then
     if [ -s "$out" ]; then
@@ -144,7 +152,7 @@ fi
 step "10. SMPL-X (resource/smplx) — registration required"
 if ! have resource/smplx/SMPLX_NEUTRAL.npz || ! have resource/smplx/SMPLX_NEUTRAL.pkl; then
   Z=${SMPLX_ZIP:-$TMP/models_smplx_v1_1.zip}
-  if [ -f "$Z" ] || tue_download smplx models_smplx_v1_1.zip "$Z" SMPL-X; then
+  if [ -f "$Z" ] || tue_download smplx models_smplx_v1_1.zip "$Z" SMPL-X https://smpl-x.is.tue.mpg.de; then
     rm -rf "$TMP/smplx" && mkdir -p "$TMP/smplx" resource/smplx \
       && unzip -oq "$Z" 'models/smplx/SMPLX_NEUTRAL.npz' 'models/smplx/SMPLX_NEUTRAL.pkl' -d "$TMP/smplx" \
       && $PY - "$TMP/smplx/models/smplx" resource/smplx <<'PY' || fail "SMPL-X conversion"
@@ -173,7 +181,7 @@ fi
 step "11. SMPL neutral (resource/smpl) — registration required"
 if ! have resource/smpl/SMPL_NEUTRAL.pkl; then
   Z=${SMPLIFY_ZIP:-$TMP/mpips_smplify_public_v2.zip}
-  if [ -f "$Z" ] || tue_download smplify mpips_smplify_public_v2.zip "$Z" SMPLify; then
+  if [ -f "$Z" ] || tue_download smplify mpips_smplify_public_v2.zip "$Z" SMPLify https://smplify.is.tue.mpg.de; then
     mkdir -p resource/smpl \
       && unzip -p "$Z" 'smplify_public/code/models/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl' > resource/smpl/SMPL_NEUTRAL.pkl \
       && [ -s resource/smpl/SMPL_NEUTRAL.pkl ] || { rm -f resource/smpl/SMPL_NEUTRAL.pkl; fail "SMPL unzip"; }
