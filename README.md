@@ -1,5 +1,6 @@
 # Jacobian Avatar (ECCV 2026)
 
+[Project Page](https://wcy199705.github.io/JacobianAvatar/) | [Paper (arXiv)](https://arxiv.org/abs/2606.31115)
 
 This repository covers the whole workflow in one place: a video captured with a single camera → preprocessing → training a mesh + 3D Gaussian avatar → rendering.
 
