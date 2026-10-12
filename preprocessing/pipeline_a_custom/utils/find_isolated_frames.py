@@ -30,8 +30,8 @@ from mmdet.apis import inference_detector, init_detector
 from mmpose.evaluation.functional import nms
 
 JACOBIAN_AVATAR_ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # repo root
-DET_CONFIG = "mmpose/demo/mmdetection_cfg/rtmdet_m_640-8xb32_coco-person.py"
-DET_CKPT = "mmpose/rtmdet_m_8xb32-100e_coco-obj365-person-235e8209.pth"
+DET_CONFIG = "libs/mmpose/demo/mmdetection_cfg/rtmdet_m_640-8xb32_coco-person.py"
+DET_CKPT = "libs/mmpose/rtmdet_m_8xb32-100e_coco-obj365-person-235e8209.pth"
 BBOX_THR = 0.3
 NMS_THR = 0.3
 DET_CAT_ID = 0

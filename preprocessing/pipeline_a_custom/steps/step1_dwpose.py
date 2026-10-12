@@ -142,10 +142,10 @@ if __name__ == "__main__":
     #   Below: DW pose test code:mmpose/demo/topdown_demo_with_mmdet.py  #
     ######################################################################
     #hyper parmaters
-    det_config = 'mmpose/demo/mmdetection_cfg/rtmdet_m_640-8xb32_coco-person.py'
-    det_checkpoint = 'mmpose/rtmdet_m_8xb32-100e_coco-obj365-person-235e8209.pth'
-    pose_config = 'mmpose/configs/wholebody_2d_keypoint/rtmpose/ubody/rtmpose-l_8xb32-270e_coco-ubody-wholebody-384x288.py'
-    pose_checkpoint = 'mmpose/dw-ll_ucoco_384.pth'
+    det_config = 'libs/mmpose/demo/mmdetection_cfg/rtmdet_m_640-8xb32_coco-person.py'
+    det_checkpoint = 'libs/mmpose/rtmdet_m_8xb32-100e_coco-obj365-person-235e8209.pth'
+    pose_config = 'libs/mmpose/configs/wholebody_2d_keypoint/rtmpose/ubody/rtmpose-l_8xb32-270e_coco-ubody-wholebody-384x288.py'
+    pose_checkpoint = 'libs/mmpose/dw-ll_ucoco_384.pth'
     bbox_thr = 0.3
     det_cat_id = 0
     nms_thr = 0.3
