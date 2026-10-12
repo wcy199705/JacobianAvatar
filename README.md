@@ -6,6 +6,8 @@ This repository covers the whole workflow in one place: a video captured with a 
 
 ## Quick Start
 
+**Requirements:** Linux, NVIDIA GPU (24GB VRAM recommended).
+
 > This repository contains **source code only**. External libraries, model weights, body models such as SMPL-X, and the MHR runtime environment (about 20GB)
 > are not included for licensing and size reasons, so fetch them once with `scripts/usage/fetch_assets.sh` before your first run ([ASSETS.md](scripts/usage/ASSETS.md)).
 
