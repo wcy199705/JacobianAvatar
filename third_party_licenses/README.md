@@ -41,6 +41,21 @@ License: [ExAvatar/LICENSE](ExAvatar/LICENSE) (MIT)
   - `core/geometry/avatar_utils.py` (`Evaluator_ExAvatar`, from `avatar/tools/eval_neuman.py`)
   - `preprocessing/legacy/utils/geometry/pose_utils.py` (pose smoothing, from `fitting/tools/smooth_smplx_params.py`)
 
+## MMPose — [open-mmlab/mmpose](https://github.com/open-mmlab/mmpose)
+
+License: [mmpose/LICENSE](mmpose/LICENSE) (Apache License 2.0)
+
+- Adapted (modified) from `demo/topdown_demo_with_mmdet.py`: `preprocessing/pipeline_a_custom/steps/step1_dwpose.py`
+
+## SMPL-X — [vchoutas/smplx](https://github.com/vchoutas/smplx)
+
+License: [SMPL-X license](https://github.com/vchoutas/smplx/blob/main/LICENSE) (MPI, non-commercial scientific research only; no redistribution)
+
+- No smplx code is included in this repository. `core/body_model/smpl_utils.py` and
+  `preprocessing/legacy/scene/object/body_model/smpl_utils.py` import `transform_mat` / `batch_rigid_transform`
+  from the `smplx` package (installed via `requirements.txt`), and the SMPL-X / SMPL models are downloaded by the user
+  after accepting their licenses (see [ASSETS.md](../scripts/usage/ASSETS.md)).
+
 ## Other external libraries
 
 For the licenses of MHR, WAFT, SAMURAI, PromptHMR, Sapiens2, and mmpose (downloaded by `fetch_libs.sh`), see

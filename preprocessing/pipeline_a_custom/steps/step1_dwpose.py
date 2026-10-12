@@ -1,3 +1,6 @@
+# Parts of this file (detector / pose-estimator setup and top-down inference) are adapted from mmpose
+# demo/topdown_demo_with_mmdet.py (https://github.com/open-mmlab/mmpose), Copyright (c) OpenMMLab. All rights reserved.
+# Licensed under the Apache License 2.0 (see third_party_licenses/mmpose/LICENSE); modified for this repository.
 import torch
 import numpy as np
 import os
