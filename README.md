@@ -2,9 +2,9 @@
 
 [Project Page](https://wcy199705.github.io/JacobianAvatar/) | [Paper (arXiv)](https://arxiv.org/abs/2606.31115)
 
-[![JacobianAvatar teaser](assets/teaser_concept.gif)](assets/teaser_concept.mp4)
+![JacobianAvatar teaser](assets/teaser_concept.gif)
 
-This repository covers the whole workflow in one place: a video captured with a single camera → preprocessing → training a mesh + 3D Gaussian avatar → rendering.
+<h3 align="center">Monocular video → Preprocessing → Mesh + 3D Gaussian avatar → Rendering</h3>
 
 ## Quick Start
 
