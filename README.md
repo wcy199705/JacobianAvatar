@@ -65,7 +65,7 @@ We thank the authors for releasing their code.
 ## Citation
 
 ```bibtex
-@inproceedings{won2026jacobianavatar,
+@inproceedings{jacobianavatar,
   title={JacobianAvatar: Temporally Consistent Semi-rigid Avatar Reconstruction from a Monocular Video},
   author={Won, Changyeon and Park, Min-Gyu and Park, Seonghwan and Yoon, Ju Hong and Jeon, Hae-Gon},
   booktitle={European Conference on Computer Vision},
