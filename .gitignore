@@ -1,6 +1,8 @@
 # External libraries, weights and body models (fetched by scripts/usage/fetch_assets.sh)
-libs/
-resource/
+libs/*
+!libs/__init__.py
+resource/*
+!resource/.gitkeep
 
 # Training / preprocessing outputs
 outputs/

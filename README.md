@@ -1,6 +1,6 @@
 # JacobianAvatar (ECCV 2026)
 
-[Project Page](https://wcy199705.github.io/JacobianAvatar/) | [Paper (arXiv)](https://arxiv.org/abs/2606.31115)
+[Project Page](https://wcy199705.github.io/JacobianAvatar/) | [Paper (ECCV)](https://link.springer.com/chapter/10.1007/978-3-032-37013-6_34) | [arXiv](https://arxiv.org/abs/2606.31115)
 
 ![JacobianAvatar teaser](assets/teaser_concept.gif)
 
@@ -44,22 +44,6 @@ bash scripts/usage/04_render_viz.sh configs/datasets/Custom-my_scene.yaml output
 | [docs/PIPELINE.md](docs/PIPELINE.md) | Training flow by stage |
 | [docs/VISUALIZATION.md](docs/VISUALIZATION.md) | Rendering scripts in detail |
 | [docs/DATASETS.md](docs/DATASETS.md) | Custom scene folder layout |
-
-## Repository Layout
-
-```
-main.py                     training entry point
-src/, core/                 training pipeline / model / renderer
-configs/datasets/           training recipes (Custom-*.yaml)
-configs/legacy/SMPLX_dataloader/CUSTOM/   scene configs (shared by preprocessing and training)
-preprocessing/pipeline_a_custom/          7-step video preprocessing
-preprocessing/legacy/       modules used by preprocessing (scene/, render/, utils/)
-libs/                       external libraries (fetch_libs.sh downloads the original GitHub sources: MHR, WAFT, PromptHMR, SAMURAI, mmpose, Sapiens2)
-resource/                   body models such as SMPL-X (downloaded by fetch_assets.sh)
-scripts/usage/              run scripts
-scripts/rendering/          rendering / video scripts
-assets/                     teaser video for this README
-```
 
 ## License
 
