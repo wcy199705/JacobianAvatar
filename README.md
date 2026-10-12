@@ -59,11 +59,17 @@ scripts/rendering/          rendering / video scripts
 ## License
 
 The code in this repository is released under the [CC BY-NC 4.0](LICENSE) license (non-commercial use only).
-Third-party code and libraries keep their own licenses — see [third_party_licenses/](third_party_licenses/README.md)
+Third-party code, libraries, weights and body models (SMPL-X / SMPL) keep their own licenses — see [third_party_licenses/](third_party_licenses/README.md)
 and the table in [ASSETS.md](scripts/usage/ASSETS.md).
 
-## Notes
+## Citation
 
-- GPU: NVIDIA, 24GB VRAM recommended. Linux.
-- Licenses for code derived from 3D Gaussian Splatting and nvdiffrast, and for dependencies: [third_party_licenses/](third_party_licenses/README.md)
-- The external libraries, weights, and SMPL-X / SMPL body models downloaded by `fetch_libs.sh` and `fetch_assets.sh` are subject to their original authors' licenses (PromptHMR is for non-commercial research use only).
+```bibtex
+@inproceedings{won2026jacobianavatar,
+  title={JacobianAvatar: Temporally Consistent Semi-rigid Avatar Reconstruction from a Monocular Video},
+  author={Won, Changyeon and Park, Min-Gyu and Park, Seonghwan and Yoon, Ju Hong and Jeon, Hae-Gon},
+  booktitle={European Conference on Computer Vision},
+  year={2026},
+  organization={Springer}
+}
+```
