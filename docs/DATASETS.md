@@ -32,12 +32,12 @@ Items actually read by the training loaders (`core/data/custom.py`, `core/data/s
 | `configs/legacy/SMPLX_dataloader/CUSTOM/<scene>.yaml` | Scene config — data path (`Path.training_folder`), body model settings. **Shared by preprocessing and training** |
 | `configs/datasets/Custom-<scene>.yaml` | Training recipe — inherits the base recipe via `extends`, `scene_name`, `save_root_override` |
 
-Templates: `CUSTOM/template.yaml`, `configs/datasets/Custom-template.yaml`.
+Example configs for a scene named `my_scene`: `CUSTOM/my_scene.yaml`, `configs/datasets/Custom-my_scene.yaml`.
 
 ## Included configs
 
-- Templates: scene `CUSTOM/template.yaml`, training recipe `configs/datasets/Custom-template.yaml`
-- Recommended recipe: `configs/datasets/Custom-05-v14_optim_v6_freeze100_scaleL2x100.yaml` (inherited by the template). `Custom-05-*` and `CUSTOM/05.yaml` are the scene configs used to develop this recipe; the data itself is not included.
+- Example (`my_scene`): scene `CUSTOM/my_scene.yaml`, training recipe `configs/datasets/Custom-my_scene.yaml`
+- Recommended recipe: `configs/datasets/Custom-05-v14_optim_v6_freeze100_scaleL2x100.yaml` (inherited by `Custom-my_scene.yaml`). `Custom-05-*` and `CUSTOM/05.yaml` are the scene configs used to develop this recipe; the data itself is not included.
 - Alternative base recipes: `configs/default2.yaml` (v14_optim_v6), `configs/default2_loose.yaml` (v14_optim_v6, loose clothing) and `configs/default3.yaml` (v14_optim_v2).
 
 ## Recommended capture conditions

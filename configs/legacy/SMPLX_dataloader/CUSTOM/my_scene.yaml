@@ -1,5 +1,6 @@
-# Custom scene config template — shared by preprocessing (run_scene.sh) and training (main.py).
-# Copy and save as <scene>.yaml (must match scene_name in the dataset yaml).
+# Scene config for the example scene `my_scene` — shared by preprocessing (run_scene.sh) and training (main.py).
+# Set Path.training_folder / novel_pose_folder to your scene folder.
+# For another scene, copy this file to <scene>.yaml (the file name must match scene_name in the training recipe).
 target_idx: 0
 
 SMPL:

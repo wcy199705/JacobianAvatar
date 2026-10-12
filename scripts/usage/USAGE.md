@@ -19,7 +19,7 @@ captured video → (1) prepare scene folder → (2) write scene yaml → (3) pre
 | Training flow by stage | `docs/PIPELINE.md` |
 | Rendering options | `docs/VISUALIZATION.md` |
 | Scene folder layout | `docs/DATASETS.md` |
-| Config templates | `configs/legacy/SMPLX_dataloader/CUSTOM/template.yaml` (scene), `configs/datasets/Custom-template.yaml` (training recipe) |
+| Example configs (`my_scene`) | `configs/legacy/SMPLX_dataloader/CUSTOM/my_scene.yaml` (scene), `configs/datasets/Custom-my_scene.yaml` (training recipe) |
 | Run scripts | `scripts/usage/00_preprocess_custom.sh` → `01_train_custom.sh` → `04_render_viz.sh` |
 
 ---
@@ -46,12 +46,8 @@ Example of extracting frames from a video: `ffmpeg -i video.mp4 -start_number 0 
 
 ## 2. Write the scene yaml (shared by preprocessing and training)
 
-```bash
-cp configs/legacy/SMPLX_dataloader/CUSTOM/template.yaml \
-   configs/legacy/SMPLX_dataloader/CUSTOM/my_scene.yaml
-```
-
-Edit only the `Path` section of `my_scene.yaml`:
+The example scene config `configs/legacy/SMPLX_dataloader/CUSTOM/my_scene.yaml` is already in place.
+Edit only its `Path` section (for another scene, copy it to `<scene>.yaml`):
 
 ```yaml
 Path:
@@ -96,9 +92,8 @@ The following steps run automatically in order. The log is written to `logs/prep
 
 ## 4. Write the training recipe yaml
 
-```bash
-cp configs/datasets/Custom-template.yaml configs/datasets/Custom-my_scene.yaml
-```
+The example recipe `configs/datasets/Custom-my_scene.yaml` is already in place and needs no changes for `my_scene`
+(for another scene, copy it to `Custom-<scene>.yaml` and change `scene_name` / `save_root_override`):
 
 ```yaml
 extends: ./Custom-05-v14_optim_v6_freeze100_scaleL2x100.yaml   # inherit the recommended recipe

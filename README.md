@@ -18,10 +18,8 @@
 bash scripts/usage/fetch_assets.sh          # external libraries (GitHub) + weights + body models. Requires SMPL-X/SMPLify accounts
 
 # 0) Prepare the scene folder: /path/to/my_scene_training/images/00000.png ...  (+ K.npy, optional)
-# 1) Write the scene configs
-cp configs/legacy/SMPLX_dataloader/CUSTOM/template.yaml configs/legacy/SMPLX_dataloader/CUSTOM/my_scene.yaml
-cp configs/datasets/Custom-template.yaml configs/datasets/Custom-my_scene.yaml
-#    → edit the paths / scene name in both files
+# 1) Point the example scene config to your scene folder:
+#    set Path.training_folder / novel_pose_folder in configs/legacy/SMPLX_dataloader/CUSTOM/my_scene.yaml
 
 # 2) Preprocessing (7 steps + finalize)
 bash scripts/usage/00_preprocess_custom.sh my_scene 2
